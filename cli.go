@@ -32,6 +32,12 @@ Options:
   -t <seconds>   Duration after which the check will time out (CRITICAL).
   -v             Show the version of this program.
   -h             Show this screen.
+
+Example:
+check-prometheusprobe -u http://somehost:9172/probe?name=success \ 
+  -s 'script_success{script="success"}' \
+  -d 'script_duration_seconds{script="success"}' \
+  -w 6 -c 8 -t 15
 `
 
 func (config *Config) readParams() {
