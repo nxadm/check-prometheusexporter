@@ -1,19 +1,15 @@
 package main
 
 import (
-	"net/http"
-	"time"
-	"io/ioutil"
 	"errors"
 	"fmt"
-	"strings"
+	"io/ioutil"
+	"net"
+	"net/http"
 	"strconv"
+	"strings"
+	"time"
 )
-
-type Answer struct {
-	Success bool
-	Duration float64
-}
 
 // Answer example
 //script_duration_seconds{script="success"} 5.003527
@@ -22,14 +18,18 @@ func getMetrics(config *Config) (*Answer, error) {
 	answer := &Answer{}
 	client := &http.Client{Timeout: time.Second * time.Duration(config.TimeoutSec)}
 
-	/* Connect and convert JSON to datastructure */
+	/* Retrieve the metrics */
 	request, err := http.NewRequest("GET", config.Url, nil)
-	//request.SetBasicAuth(config.User, config.Pass)
-	response, err := client.Do(request)
-	defer response.Body.Close()
 	if err != nil {
-		return nil, err
+		return checkTimeout(answer, err)
 	}
+	//request.SetBasicAuth(config.User, config.Pass)
+
+	response, err := client.Do(request)
+	if err != nil {
+		return checkTimeout(answer, err)
+	}
+	defer response.Body.Close()
 	var bodyStr string
 	if response.StatusCode == http.StatusOK {
 		bodyBytes, err := ioutil.ReadAll(response.Body)
@@ -42,6 +42,8 @@ func getMetrics(config *Config) (*Answer, error) {
 			fmt.Sprintf("%s: %i", "Received error HTTP status", response.StatusCode)
 		return nil, errors.New(errorStr)
 	}
+
+	/* Convert the metrics */
 	info := strings.Split(bodyStr, "\n")
 	for _, result := range info {
 		switch {
@@ -66,5 +68,12 @@ func getMetrics(config *Config) (*Answer, error) {
 		}
 	}
 
+	return answer, err
+}
+
+func checkTimeout(answer *Answer, err error) (*Answer, error) {
+	if err, ok := err.(net.Error); ok && err.Timeout() {
+		answer.TimedOut = true
+	}
 	return answer, err
 }

@@ -51,16 +51,15 @@ func (config *Config) readParams() {
 	// Handle early exits
 	switch {
 	case *help == true:
-		showHelp()
-		os.Exit(0)
+		fmt.Println(usage)
+		os.Exit(UNKNOWN)
 	case *progVersion == true:
-		showVersion()
-		os.Exit(0)
+		fmt.Println(appname + ", " + version + ".")
+		os.Exit(UNKNOWN)
 	case *url == "" || *successMetric == "" || *durationMetric == "" ||
 		*warningSec == 0 || *criticalSec == 0 || *timeoutSec == 0:
-		os.Stderr.WriteString("Invalid of missing values for parameters.\n\n")
-		showHelp()
-		os.Exit(1)
+		fmt.Println("[UNKNOWN] Invalid of missing values for parameters.")
+		os.Exit(UNKNOWN)
 	}
 
 	// Import the values
@@ -70,14 +69,4 @@ func (config *Config) readParams() {
 	config.WarningSec = *warningSec
 	config.CriticalSec = *criticalSec
 	config.TimeoutSec = *timeoutSec
-}
-
-func showHelp() bool {
-	fmt.Println(usage)
-	return true
-}
-
-func showVersion() bool {
-	fmt.Println(appname + ", " + version + ".")
-	return true
 }
