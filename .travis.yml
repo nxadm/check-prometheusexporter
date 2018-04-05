@@ -1,15 +1,23 @@
 language: go
 go:
   - 1.10.x
+sudo: false    
 script:
-- go build
+- go test
+before_deploy:
+  - mkdir -p release
+  - "GOOS=linux GOARCH=amd64 go build -o release/check-prometheusprobe-linux-amd64"
+  - "GOOS=linux GOARCH=386 go build -o release/check-prometheusprobe-linux-386"
+  - "GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusprobe-darwin-amd64"
+  - "GOOS=windows GOARCH=amd64 go build -o release/check-prometheusprobe-windows-amd64"
+  - "GOOS=windows GOARCH=386 go build -o release/check-prometheusprobe-windows-386"
 deploy:
   provider: releases
   prerelease: true
   api_key:
     secure: kZZIX3JLoAowpJgQXUheKMquNtnPUNa18SFQQSYaQe3OjaBLzJGuI/Dv+eju3dZA9HWXVVfAl/EBYmx0YRyIa8XPoKL+hxbl29sdcP7wNi4OJsIcYr2dY7dcPY2T1RIWCd2cU7CXbJ1IquDN67asWEBxbpwpZluYDd9odx2JMeMAf2XX+VQjFxwK92hGrpLMdtzNstSiZvYn7inBTOU8nrBxQVccd7ec9ZsF8PUjohazUzpCHYvHgZOPHQZY1UgOD1KlrUmPtUToakDOnXyysZBvC3YBq833eqBXIlaoCELnFdzOnwIQzewxYgXrz4JQQhUmXPIvmylM0MoNp1MnkANs68oECBLvOB8kxOglIYWBad6GtaR5pkLhh3bPwc6fwqZZQMoqlncesKDPtHvmtQmWpWFxbwYsOFgFDcc3jW8DV233EbpubrREbrYFq83Ahc0aYx+GpNWFZ71jlXcErZ7tB/KltHWoCjLPq1dxCIFiq/AOLylK9meo/AQF+RXAb5+3fkd32X5xyRQejYfdhGxZ/c6QkV4C3BAIypJ76Hi0MfePuylMTe4P59nkT98j6ef3d8MtPHIM8DdBww6erseteKCaS0fZaf3e3YBhG9TJYLTHri4o/StCnqTMyiANEcsNoQB3oFC3z5Q76jYHocKo5g+z/6/ooeipn03hKsA=
   file_glob: true
-  file: check-prometheusprobe 
+  file: "release/*" 
   skip_cleanup: true
   on:
     repo: nxadm/check-prometheusprobe
