@@ -20,8 +20,8 @@ Usage:
     -u <URL> -s <metric> -d <metric>
     -w <seconds> -c <seconds>
     [-t <seconds>]
-  check-netscaler-activeservices -v
-  check-netscaler-activeservices -h
+  check-prometheusprobe -v
+  check-prometheusprobe -h
 
 Options:
   -u <URL>       Prometheus probe endpoint.
