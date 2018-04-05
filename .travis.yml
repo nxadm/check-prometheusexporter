@@ -1,27 +1,27 @@
 language: go
 go:
-  - 1.10.x
-sudo: false    
+- 1.10.x
+sudo: false
 script:
 - go test
 before_deploy:
-  - mkdir -p release
-  - "GOOS=linux GOARCH=amd64 go build -o release/check-prometheusprobe-linux-amd64"
-  - "GOOS=linux GOARCH=386 go build -o release/check-prometheusprobe-linux-386"
-  - "GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusprobe-darwin-amd64"
-  - "GOOS=windows GOARCH=amd64 go build -o release/check-prometheusprobe-windows-amd64"
-  - "GOOS=windows GOARCH=386 go build -o release/check-prometheusprobe-windows-386"
+- mkdir -p release
+- GOOS=linux GOARCH=amd64 go build -o release/check-prometheusprobe-linux-amd64
+- GOOS=linux GOARCH=386 go build -o release/check-prometheusprobe-linux-386
+- GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusprobe-darwin-amd64
+- GOOS=windows GOARCH=amd64 go build -o release/check-prometheusprobe-windows-amd64
+- GOOS=windows GOARCH=386 go build -o release/check-prometheusprobe-windows-386
 deploy:
   provider: releases
   prerelease: true
   api_key:
-    secure: kZZIX3JLoAowpJgQXUheKMquNtnPUNa18SFQQSYaQe3OjaBLzJGuI/Dv+eju3dZA9HWXVVfAl/EBYmx0YRyIa8XPoKL+hxbl29sdcP7wNi4OJsIcYr2dY7dcPY2T1RIWCd2cU7CXbJ1IquDN67asWEBxbpwpZluYDd9odx2JMeMAf2XX+VQjFxwK92hGrpLMdtzNstSiZvYn7inBTOU8nrBxQVccd7ec9ZsF8PUjohazUzpCHYvHgZOPHQZY1UgOD1KlrUmPtUToakDOnXyysZBvC3YBq833eqBXIlaoCELnFdzOnwIQzewxYgXrz4JQQhUmXPIvmylM0MoNp1MnkANs68oECBLvOB8kxOglIYWBad6GtaR5pkLhh3bPwc6fwqZZQMoqlncesKDPtHvmtQmWpWFxbwYsOFgFDcc3jW8DV233EbpubrREbrYFq83Ahc0aYx+GpNWFZ71jlXcErZ7tB/KltHWoCjLPq1dxCIFiq/AOLylK9meo/AQF+RXAb5+3fkd32X5xyRQejYfdhGxZ/c6QkV4C3BAIypJ76Hi0MfePuylMTe4P59nkT98j6ef3d8MtPHIM8DdBww6erseteKCaS0fZaf3e3YBhG9TJYLTHri4o/StCnqTMyiANEcsNoQB3oFC3z5Q76jYHocKo5g+z/6/ooeipn03hKsA=
+    secure: WGGAzfSHk6mnUDxu0gFp0QoxBRrHnFjCElG/8dlO2lMJT0iUcr6aOLXwS5pwCtxeydshBAQ5rPbKPBJNK4cslJxrgm4vvvkobLxr9MkhmfqkzUUlYIz99+yid8fZTHjWI9MmRbo4yTrNhzfT6pZe01z1j+moXcZXnVhNTrAntUPsp/610YKw+4toeJnIVCXJiWvZK+hSt36bl0KK6/gPzxVwsa0RJBXgLlwvaL/71xfE1h2bQcm96kmORWDgYeaQ4mkjBBI067277dpYTd1ztzP/mScOlhDPb463iXTOJ+q587XbzieoGJ9LKQ1L/RdMuXhmc9FrEC/Kr3LrZI3m5RVpAOEfP8/6eYb6zOIKEwt5tb1rxC6gXOfFHAb4lcAvf94SUUZdI5ivnUNLFpzkrPgNah5SuJQB3S8p+yFovKC2k8K6TZH/CGyIRK+C3e4498cF6rwUQlzMuNNUzS39N6KW4ZQhNvhOvgS/rMF6TPsXF/OZ9n2TOWYyIIqBYPlj/GPup1IbOTDS+nyvXkcIyrFTuN88Q88aja3xCL4aIzRtEl16YvPe4+d+ryUb/4WRCJma5OOh9gAs6OEvj+Q4u9eJK9UmldHAxUqmxe+Dw0nzwtY0dYVfX7sNx0eNlvE0izxzaB1ibKDFj7msTrXa2zaOPIxgbW83mvbaslEGNO4=
   file_glob: true
-  file: "release/*" 
+  file: release/*
   skip_cleanup: true
   on:
     repo: nxadm/check-prometheusprobe
     tags: true
   branches:
     only:
-      - /^v\d+\.\d+\.\d+$/
+    - "/^v\\d+\\.\\d+\\.\\d+$/"
