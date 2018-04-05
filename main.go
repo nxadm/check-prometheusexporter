@@ -6,7 +6,7 @@ import (
 )
 
 const appname = "check-prometheusprobe"
-const version = "0.1.0"
+const version = "0.1.1"
 const author = "Claudio Ramirez <pub.claudio@gmail.com>"
 const repo = "https://github.com/nxadm/check-prometheusprobe.git"
 

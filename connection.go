@@ -39,7 +39,7 @@ func getMetrics(config *Config) (*Answer, error) {
 		bodyStr = string(bodyBytes)
 	} else {
 		errorStr :=
-			fmt.Sprintf("%s: %i", "Received error HTTP status", response.StatusCode)
+			fmt.Sprintf("%s: %d", "Received error HTTP status", response.StatusCode)
 		return nil, errors.New(errorStr)
 	}
 
