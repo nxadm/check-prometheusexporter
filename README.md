@@ -2,11 +2,12 @@
 
 [![Build Status](https://travis-ci.org/nxadm/check-prometheusprobe.svg?branch=master)](https://travis-ci.org/nxadm/check-prometheusprobe)
 
-Nagios/Icinga check for Prometheus exporter endpoints. This program designed to
-work with [Prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/),
-like [script_exporter](https://github.com/adhocteam/script_exporter). A Prometheus
-setup is not needed to use this monitoring script, just and endpoint exposing
-the metrics.
+Nagios/Icinga check for Prometheus exporter endpoints. This program designed
+to work with
+[Prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/),
+like [script_exporter](https://github.com/adhocteam/script_exporter). A
+Prometheus setup is not needed to use this monitoring script, just an
+endpoint exposing the metrics.
 
 # Usage
 
