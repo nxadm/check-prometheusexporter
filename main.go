@@ -5,10 +5,10 @@ import (
 	"os"
 )
 
-const appname = "check-prometheusprobe"
-const version = "0.1.1"
+const appname = "check-prometheusexporter"
+const version = "0.2.0"
 const author = "Claudio Ramirez <pub.claudio@gmail.com>"
-const repo = "https://github.com/nxadm/check-prometheusprobe.git"
+const repo = "https://github.com/nxadm/" + appname + ".git"
 
 /* Nagios exit status */
 const (

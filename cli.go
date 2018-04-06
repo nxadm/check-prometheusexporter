@@ -16,12 +16,12 @@ _-(_)-  _-(_)-  _-(_)-  _-(")-  _-(_)-  _-(_)-  _-(_)-  _-(_)-
 // \\   // \\   // \\   // \\   // \\   // \\   // \\   // \\
 
 Usage:
-  check-prometheusprobe
+  ` + appname + `
     -u <URL> -s <metric> -d <metric>
     -w <seconds> -c <seconds>
     [-t <seconds>]
-  check-prometheusprobe -v
-  check-prometheusprobe -h
+  ` + appname + ` -v
+  ` + appname + ` -h
 
 Options:
   -u <URL>       Prometheus probe endpoint.
@@ -34,7 +34,7 @@ Options:
   -h             Show this screen.
 
 Example:
-  check-prometheusprobe -u http://somehost:9172/probe?name=success \ 
+  ` + appname + ` -u http://somehost:9172/probe?name=success \ 
     -s 'script_success{script="success"}' \
     -d 'script_duration_seconds{script="success"}' \
     -w 6 -c 8 -t 15

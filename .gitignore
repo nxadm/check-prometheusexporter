@@ -19,7 +19,7 @@ _cgo_export.*
 
 _testmain.go
 
-check-prometheusprobe
+check-prometheusexporter
 *.exe
 *.test
 *.prof

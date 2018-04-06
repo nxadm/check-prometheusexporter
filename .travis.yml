@@ -6,11 +6,11 @@ script:
 - go test
 before_deploy:
 - mkdir -p release
-- GOOS=linux GOARCH=amd64 go build -o release/check-prometheusprobe-linux-amd64
-- GOOS=linux GOARCH=386 go build -o release/check-prometheusprobe-linux-386
-- GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusprobe-darwin-amd64
-- GOOS=windows GOARCH=amd64 go build -o release/check-prometheusprobe-windows-amd64
-- GOOS=windows GOARCH=386 go build -o release/check-prometheusprobe-windows-386
+- GOOS=linux GOARCH=amd64 go build -o release/check-prometheusexporter-$GOOS$GOARCH
+- GOOS=linux GOARCH=386 go build -o release/check-prometheusexporter-$GOOS$GOARCH
+- GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusexporter-$GOOS$GOARCH
+- GOOS=windows GOARCH=amd64 go build -o release/check-prometheusexporter-$GOOS$GOARCH
+- GOOS=windows GOARCH=386 go build -o release/check-prometheusexporter-$GOOS$GOARCH
 deploy:
   provider: releases
   prerelease: true
@@ -20,7 +20,7 @@ deploy:
   file: release/*
   skip_cleanup: true
   on:
-    repo: nxadm/check-prometheusprobe
+    repo: nxadm/check-prometheusexporter
     tags: true
   branches:
     only:

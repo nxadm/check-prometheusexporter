@@ -1,6 +1,6 @@
-# check-prometheusprobe
+# check-prometheusexporter
 
-[![Build Status](https://travis-ci.org/nxadm/check-prometheusprobe.svg?branch=master)](https://travis-ci.org/nxadm/check-prometheusprobe)
+[![Build Status](https://travis-ci.org/nxadm/check-prometheusexporter.svg?branch=master)](https://travis-ci.org/nxadm/check-prometheusexporter)
 
 Nagios/Icinga check for Prometheus exporter endpoints. This program designed
 to work with
@@ -12,23 +12,23 @@ endpoint exposing the metrics.
 # Usage
 
 ```bash
-$ ./check-prometheusprobe -h
-check-prometheusprobe, 0.1.0.
+$ ./check-prometheusexporter -h
+check-prometheusexporter, 0.2.0.
 Nagios/Icinga check to query metric endpoint of Prometheus exporters.
 Author: Claudio Ramirez <pub.claudio@gmail.com>.
-Repo: https://github.com/nxadm/check-prometheusprobe.git.
+Repo: https://github.com/nxadm/check-prometheusexporter.git.
    _       _       _       _       _       _       _       _
 _-(_)-  _-(_)-  _-(_)-  _-(")-  _-(_)-  _-(_)-  _-(_)-  _-(_)-
 *(___)  *(___)  *(___)  *%%%%%  *(___)  *(___)  *(___)  *(___)
 // \\   // \\   // \\   // \\   // \\   // \\   // \\   // \\
 
 Usage:
-  check-prometheusprobe
+  check-prometheusexporter
     -u <URL> -s <metric> -d <metric>
     -w <seconds> -c <seconds>
     [-t <seconds>]
-  check-prometheusprobe -v
-  check-prometheusprobe -h
+  check-prometheusexporter -v
+  check-prometheusexporter -h
 
 Options:
   -u <URL>       Prometheus probe endpoint.
@@ -41,7 +41,7 @@ Options:
   -h             Show this screen.
 
 Example:
-  check-prometheusprobe -u http://somehost:9172/probe?name=success \
+  check-prometheusexporter -u http://somehost:9172/probe?name=success \
     -s 'script_success{script="success"}' \
     -d 'script_duration_seconds{script="success"}' \
     -w 6 -c 8 -t 15
