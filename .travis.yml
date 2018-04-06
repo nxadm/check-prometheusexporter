@@ -5,12 +5,12 @@ sudo: false
 script:
 - go test
 before_deploy:
-- mkdir -p release
-- GOOS=linux GOARCH=amd64 go build -o release/check-prometheusexporter-${GOOS}${GOARCH}
-- GOOS=linux GOARCH=386 go build -o release/check-prometheusexporter-${GOOS}${GOARCH}
-- GOOS=darwin GOARCH=amd64 go build -o release/check-prometheusexporter-${GOOS}${GOARCH}
-- GOOS=windows GOARCH=amd64 go build -o release/check-prometheusexporter-${GOOS}${GOARCH}
-- GOOS=windows GOARCH=386 go build -o release/check-prometheusexporter-${GOOS}${GOARCH}
+- mkdir -p release && cd release
+- export GOOS=linux GOARCH=amd64; go build -o check-prometheusexporter-${GOOS}${GOARCH}
+- export GOOS=linux GOARCH=386; go build -o check-prometheusexporter-${GOOS}${GOARCH}
+- export GOOS=darwin GOARCH=amd64; go build -o check-prometheusexporter-${GOOS}${GOARCH}
+- export GOOS=windows GOARCH=amd64; go build -o check-prometheusexporter-${GOOS}${GOARCH}
+- export GOOS=windows GOARCH=386; go build -o check-prometheusexporter-${GOOS}${GOARCH}
 deploy:
   provider: releases
   prerelease: true
