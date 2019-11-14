@@ -6,7 +6,7 @@ import (
 )
 
 const appname = "check-prometheusexporter"
-const version = "0.2.1"
+const version = "0.2.2"
 const author = "Claudio Ramirez <pub.claudio@gmail.com>"
 const repo = "https://github.com/nxadm/" + appname + ".git"
 
