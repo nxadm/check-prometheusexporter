@@ -1,9 +1,9 @@
 language: go
 go:
-- "1.13.x"
-- "1.12.x"
-- "1.11.x"
-- "1.10.x"
+- 1.13.x
+- 1.12.x
+- 1.11.x
+- 1.10.x
 sudo: false
 script:
 - go test
@@ -16,15 +16,8 @@ before_deploy:
 - export GOOS=windows GOARCH=386; go build -o release/check-prometheusexporter-${GOOS}-${GOARCH}
 deploy:
   provider: releases
-  prerelease: true
   api_key:
-    secure: WGGAzfSHk6mnUDxu0gFp0QoxBRrHnFjCElG/8dlO2lMJT0iUcr6aOLXwS5pwCtxeydshBAQ5rPbKPBJNK4cslJxrgm4vvvkobLxr9MkhmfqkzUUlYIz99+yid8fZTHjWI9MmRbo4yTrNhzfT6pZe01z1j+moXcZXnVhNTrAntUPsp/610YKw+4toeJnIVCXJiWvZK+hSt36bl0KK6/gPzxVwsa0RJBXgLlwvaL/71xfE1h2bQcm96kmORWDgYeaQ4mkjBBI067277dpYTd1ztzP/mScOlhDPb463iXTOJ+q587XbzieoGJ9LKQ1L/RdMuXhmc9FrEC/Kr3LrZI3m5RVpAOEfP8/6eYb6zOIKEwt5tb1rxC6gXOfFHAb4lcAvf94SUUZdI5ivnUNLFpzkrPgNah5SuJQB3S8p+yFovKC2k8K6TZH/CGyIRK+C3e4498cF6rwUQlzMuNNUzS39N6KW4ZQhNvhOvgS/rMF6TPsXF/OZ9n2TOWYyIIqBYPlj/GPup1IbOTDS+nyvXkcIyrFTuN88Q88aja3xCL4aIzRtEl16YvPe4+d+ryUb/4WRCJma5OOh9gAs6OEvj+Q4u9eJK9UmldHAxUqmxe+Dw0nzwtY0dYVfX7sNx0eNlvE0izxzaB1ibKDFj7msTrXa2zaOPIxgbW83mvbaslEGNO4=
-  file_glob: true
-  file: release/*
-  skip_cleanup: true
+    secure: k1/N1cttTSMzrKqQIwb8e5qv5wFhV52yySXh8bCjov3fFeu6EFi9dlCee/H3PhvfMOioAfpsLIGWE1Gn/1GDH0cVv+mHF4UYHVmUR10HEjf9Jlo/+HuIkXV4r3rPHxmC3CCbf0RNlh2ufu/RNG8wRN1ju2JAeWFY5eROcxx45ALUXklq01qfwcMi3q+QVzbZUVKnVWokjw0A90ocjUMcKudkYoDXocEQw9KEb8LsWJK+OyBIBhuTx93W687QThZ84B8aKdWkoIrQM5KYdYLsMW/5z1UK2efoXc/v6IHccRMM01vx8QWCS/TxlEkE85QvtJvqi4Z+dHwvH28Pbfj/3N93BWLDcVzgMSCD01zwGjAwuSj9m5U3r0pNlG22souASxe1REg50Ouk3qhY/KR04uu6tvG1irwbL168zTy6Osq6o+ZgjOWiWbMdIBTo+MzhEmK7yjag/h23mJ003vgVelOhrpQ7Rj+zIMa7ed/BOTWQ0f/+bUXmCJIrjaxwUXqqczJJQeW6pfFLcj9N8/DKO27yfHcBAmcDMeLf0txlX88sZBmCii9Wc+GT3e+MsBc8Y/x8NDjoXySxqtKPpoIOG8vkQNBFhlBd7Zo5LFl5r8PfBXs07oKMgVbFqrBLnLePRPOa0Xcg3VXSC44mQeDe/aenwcT4NWvj3NV8/GNJih8=
+  file: "*"
   on:
     repo: nxadm/check-prometheusexporter
-    tags: true
-  branches:
-    only:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
