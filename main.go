@@ -29,12 +29,10 @@ type Config struct {
 }
 
 func main() {
-	/* Read the CLI parameters */
+	// Read the CLI parameters
 	cfg := handleCLI()
-	fmt.Printf("%#v\n", cfg)
 
-
-	/* Query the probe */
+	// Query the probe
 	answer, err := getMetrics(&cfg)
 	if err != nil {
 		if answer != nil && answer.TimedOut {
@@ -69,5 +67,4 @@ func main() {
 			answer.Duration, cfg.CriticalSec, cfg.WarningSec)
 		os.Exit(OK)
 	}
-
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"fmt"
 	"io/ioutil"
@@ -16,31 +17,38 @@ import (
 //script_success{script="success"} 1
 func getMetrics(config *Config) (*Answer, error) {
 	answer := &Answer{}
-	client := &http.Client{Timeout: time.Second * time.Duration(config.TimeoutSec)}
 
-	/* Retrieve the metrics */
-	request, err := http.NewRequest("GET", config.Url, nil)
+	req, err := http.NewRequest("GET", config.Url, nil)
 	if err != nil {
 		return checkTimeout(answer, err)
 	}
-	//request.SetBasicAuth(config.User, config.Pass)
 
-	response, err := client.Do(request)
+	timeout := time.Second * time.Duration(config.TimeoutSec)
+	ctx, cancel := context.WithTimeout(req.Context(), timeout)
+	defer cancel()
+
+	req = req.WithContext(ctx)
+
+	//req.SetBasicAuth(config.User, config.Pass)
+
+	c := http.DefaultClient
+	resp, err := c.Do(req)
 	if err != nil {
-		fmt.Print("HERE")
 		return checkTimeout(answer, err)
 	}
-	defer response.Body.Close()
+	fmt.Printf("STATUS: %#v", resp.Status)
+
+	defer resp.Body.Close()
 	var bodyStr string
-	if response.StatusCode == http.StatusOK {
-		bodyBytes, err := ioutil.ReadAll(response.Body)
+	if resp.StatusCode == http.StatusOK {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			return nil, err
 		}
 		bodyStr = string(bodyBytes)
 	} else {
 		errorStr :=
-			fmt.Sprintf("%s: %d", "Received error HTTP status", response.StatusCode)
+			fmt.Sprintf("%s: %d", "HTTP status", resp.StatusCode)
 		return nil, errors.New(errorStr)
 	}
 
@@ -55,7 +63,7 @@ func getMetrics(config *Config) (*Answer, error) {
 			valStr := strings.Trim(valStrSlice[1], " \n")
 			converted, err := strconv.ParseInt(valStr, 10, 2)
 			if err != nil {
-				return nil, errors.New("Invalid answer: " + err.Error())
+				return nil, errors.New("invalid answer: " + err.Error())
 			}
 			if converted == 1 {
 				answer.Success = true
@@ -66,7 +74,7 @@ func getMetrics(config *Config) (*Answer, error) {
 			valStr := strings.Trim(valStrSlice[1], " \n")
 			converted, err := strconv.ParseFloat(valStr, 8)
 			if err != nil {
-				return nil, errors.New("Invalid answer: " + err.Error())
+				return nil, errors.New("invalid answer: " + err.Error())
 			}
 			answer.Duration = converted
 			expectedResults++
@@ -74,7 +82,7 @@ func getMetrics(config *Config) (*Answer, error) {
 	}
 
 	if expectedResults != 2 {
-		return nil, errors.New("Invalid body")
+		return nil, errors.New("invalid body")
 	}
 
 	return answer, nil
