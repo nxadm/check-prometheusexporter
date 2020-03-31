@@ -36,7 +36,6 @@ func getMetrics(config *Config) (*Answer, error) {
 	if err != nil {
 		return checkTimeout(answer, err)
 	}
-	fmt.Printf("STATUS: %#v", resp.Status)
 
 	defer resp.Body.Close()
 	var bodyStr string
@@ -56,9 +55,11 @@ func getMetrics(config *Config) (*Answer, error) {
 	var expectedResults int
 
 	info := strings.Split(bodyStr, "\n")
+
 	for _, result := range info {
 		switch {
-		case strings.HasPrefix(result, config.SuccessMetric):
+		case strings.HasPrefix(fmt.Sprintf(result), config.SuccessMetric):
+			expectedResults++
 			valStrSlice := strings.Split(result, config.SuccessMetric)
 			valStr := strings.Trim(valStrSlice[1], " \n")
 			converted, err := strconv.ParseInt(valStr, 10, 2)
@@ -67,9 +68,9 @@ func getMetrics(config *Config) (*Answer, error) {
 			}
 			if converted == 1 {
 				answer.Success = true
-				expectedResults++
 			}
 		case strings.HasPrefix(result, config.DurationMetric):
+			expectedResults++
 			valStrSlice := strings.Split(result, config.DurationMetric)
 			valStr := strings.Trim(valStrSlice[1], " \n")
 			converted, err := strconv.ParseFloat(valStr, 8)
@@ -77,10 +78,10 @@ func getMetrics(config *Config) (*Answer, error) {
 				return nil, errors.New("invalid answer: " + err.Error())
 			}
 			answer.Duration = converted
-			expectedResults++
 		}
 	}
 
+	fmt.Printf("expected: %#v\n", expectedResults)
 	if expectedResults != 2 {
 		return nil, errors.New("invalid body")
 	}
