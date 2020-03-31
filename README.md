@@ -13,7 +13,7 @@ endpoint exposing the metrics.
 
 ```bash
 $ ./check-prometheusexporter -h
-check-prometheusexporter, 0.2.2.
+check-prometheusexporter, 0.2.3.
 Nagios/Icinga check to query metric endpoint of Prometheus exporters.
 Author: Claudio Ramirez <pub.claudio@gmail.com>.
 Repo: https://github.com/nxadm/check-prometheusexporter.git.
