@@ -27,6 +27,7 @@ func getMetrics(config *Config) (*Answer, error) {
 
 	response, err := client.Do(request)
 	if err != nil {
+		fmt.Print("HERE")
 		return checkTimeout(answer, err)
 	}
 	defer response.Body.Close()
@@ -44,6 +45,8 @@ func getMetrics(config *Config) (*Answer, error) {
 	}
 
 	/* Convert the metrics */
+	var expectedResults int
+
 	info := strings.Split(bodyStr, "\n")
 	for _, result := range info {
 		switch {
@@ -56,6 +59,7 @@ func getMetrics(config *Config) (*Answer, error) {
 			}
 			if converted == 1 {
 				answer.Success = true
+				expectedResults++
 			}
 		case strings.HasPrefix(result, config.DurationMetric):
 			valStrSlice := strings.Split(result, config.DurationMetric)
@@ -65,10 +69,15 @@ func getMetrics(config *Config) (*Answer, error) {
 				return nil, errors.New("Invalid answer: " + err.Error())
 			}
 			answer.Duration = converted
+			expectedResults++
 		}
 	}
 
-	return answer, err
+	if expectedResults != 2 {
+		return nil, errors.New("Invalid body")
+	}
+
+	return answer, nil
 }
 
 func checkTimeout(answer *Answer, err error) (*Answer, error) {
