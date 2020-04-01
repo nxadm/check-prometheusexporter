@@ -81,7 +81,6 @@ func getMetrics(config *Config) (*Answer, error) {
 		}
 	}
 
-	fmt.Printf("expected: %#v\n", expectedResults)
 	if expectedResults != 2 {
 		return nil, errors.New("invalid body")
 	}
