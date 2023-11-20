@@ -5,10 +5,11 @@ import (
 	"os"
 )
 
-const appname = "check-prometheusexporter"
-const version = "0.3.0"
-const author = "Claudio Ramirez <pub.claudio@gmail.com>"
-const repo = "https://github.com/nxadm/" + appname + ".git"
+const (
+	appname = "check-prometheusexporter"
+	author  = "Claudio Ramirez <pub.claudio@gmail.com>"
+	repo    = "https://github.com/nxadm/" + appname + ".git"
+)
 
 /* Nagios exit status */
 const (
@@ -18,53 +19,50 @@ const (
 	UNKNOWN
 )
 
+var version = "development" // to be overwritten by tag at buildtime with ld flags "-X main.version=tag"
+
 type Answer struct {
 	Success, TimedOut bool
 	Duration          float64
 }
 
 type Config struct {
-	Url, SuccessMetric, DurationMetric  string
+	URL, SuccessMetric, DurationMetric  string
 	WarningSec, CriticalSec, TimeoutSec int
 }
 
 func main() {
-	// Read the CLI parameters
-	cfg := handleCLI()
+	config := handleCLI()
+	msg, exitCode := config.getExitInfo(config.getMetrics())
+	fmt.Println(msg)
+	os.Exit(exitCode)
+}
 
-	// Query the probe
-	answer, err := getMetrics(&cfg)
+func (config *Config) getExitInfo(answer *Answer, err error) (string, int) {
 	if err != nil {
 		if answer != nil && answer.TimedOut {
-			fmt.Printf("[CRITICAL] Timeout (%d) reached: %v\n", cfg.TimeoutSec, err)
-			os.Exit(CRITICAL)
-		} else {
-			fmt.Printf("[UNKNOWN] Can not decode the server's answer: %v\n", err)
-			os.Exit(UNKNOWN)
+			return fmt.Sprintf("[CRITICAL] Timeout (%d) reached: %v\n", config.TimeoutSec, err), CRITICAL
 		}
+
+		return fmt.Sprintf("[UNKNOWN] Can not decode the server's answer: %v\n", err), UNKNOWN
 	}
 
 	if !answer.Success {
-		fmt.Println("[CRITICAL] The service reports a failure.")
-		os.Exit(CRITICAL)
-
+		return fmt.Sprintln("[CRITICAL] The service reports a failure."), CRITICAL
 	}
 
 	switch {
-	case answer.Duration >= float64(cfg.CriticalSec):
-		fmt.Printf(
+	case answer.Duration >= float64(config.CriticalSec):
+		return fmt.Sprintf(
 			"[CRITICAL] Check duration (%f) was higher than critical threshold (%d).\n",
-			answer.Duration, cfg.CriticalSec)
-		os.Exit(CRITICAL)
-	case answer.Duration >= float64(cfg.WarningSec):
-		fmt.Printf(
+			answer.Duration, config.CriticalSec), CRITICAL
+	case answer.Duration >= float64(config.WarningSec):
+		return fmt.Sprintf(
 			"[WARNING] Check duration (%f) was higher than warning threshold (%d).\n",
-			answer.Duration, cfg.WarningSec)
-		os.Exit(WARNING)
+			answer.Duration, config.WarningSec), WARNING
 	default:
-		fmt.Printf(
+		return fmt.Sprintf(
 			"[OK] Check duration (%f) lower than thresholds (critical: %d, warning: %d).\n",
-			answer.Duration, cfg.CriticalSec, cfg.WarningSec)
-		os.Exit(OK)
+			answer.Duration, config.CriticalSec, config.WarningSec), OK
 	}
 }

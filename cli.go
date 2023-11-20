@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-const usage = appname + ", " + version + ".\n" +
+var usage = appname + ", " + version + ".\n" +
 	`Nagios/Icinga check to query metric endpoint of Prometheus exporters.
 Author: ` + author + `.
 Repo: ` + repo + `.
@@ -53,13 +53,13 @@ func handleCLI() Config {
 	criticalSec := flag.Int("c", 0, "")
 	timeoutSec := flag.Int("t", 0, "")
 
-	flag.Usage = func() { fmt.Println(usage) }
+	flag.Usage = func() { fmt.Print(usage) }
 	flag.Parse()
 
 	// Handle early exits
 	switch {
 	case *help:
-		fmt.Println(usage)
+		fmt.Print(usage)
 		os.Exit(UNKNOWN)
 	case *progVersion:
 		fmt.Println(appname + ", " + version + ".")
@@ -71,13 +71,13 @@ func handleCLI() Config {
 	}
 
 	// Import the values
-	cfg := Config{}
-	cfg.Url = *url
-	cfg.SuccessMetric = *successMetric
-	cfg.DurationMetric = *durationMetric
-	cfg.WarningSec = *warningSec
-	cfg.CriticalSec = *criticalSec
-	cfg.TimeoutSec = *timeoutSec
+	config := Config{}
+	config.URL = *url
+	config.SuccessMetric = *successMetric
+	config.DurationMetric = *durationMetric
+	config.WarningSec = *warningSec
+	config.CriticalSec = *criticalSec
+	config.TimeoutSec = *timeoutSec
 
-	return cfg
+	return config
 }
