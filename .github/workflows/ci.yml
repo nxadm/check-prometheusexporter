@@ -40,7 +40,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v3
         with:
-          name: packages-upload
+          name: packages
           path: |
             ${{ github.workspace }}/packages/
             D:\a\check-prometheusexporter\check-prometheusexporter\packages\
@@ -53,7 +53,7 @@ jobs:
       - name: Download packages
         uses: actions/download-artifact@v3
         with:
-          name: packages-download
+          name: packages
           path: |
             ${{ github.workspace }}/packages/
             D:\a\check-prometheusexporter\check-prometheusexporter\packages\
