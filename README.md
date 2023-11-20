@@ -1,7 +1,5 @@
 # check-prometheusexporter
 
-[![Build Status](https://travis-ci.org/nxadm/check-prometheusexporter.svg?branch=master)](https://travis-ci.org/nxadm/check-prometheusexporter)
-
 Nagios/Icinga check for Prometheus exporter endpoints. This program designed
 to work with
 [Prometheus exporters](https://prometheus.io/docs/instrumenting/exporters/),
