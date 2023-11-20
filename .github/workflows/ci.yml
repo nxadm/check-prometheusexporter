@@ -39,7 +39,7 @@ jobs:
           for /f %%i in ('git describe --tags --match 'v[0-9]*') do set PROG_VERSION=%%i
           go build -ldflags "-w -s -X main.version=%PROG_VERSION% -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
       - name: Archive packages
-        if: startsWith(github.ref, 'refs/tags/v') && ${{ env.GO_VERSION == env.GO_LATEST }} && ${{ env.OS != "windows-latest" }}
+        if: startsWith(github.ref, 'refs/tags/v') && ${{ env.GO_VERSION == env.GO_LATEST }} && ${{ env.OS }} != "windows-latest"
         uses: actions/upload-artifact@v2
         with:
           name: packages
