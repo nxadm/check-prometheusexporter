@@ -22,7 +22,7 @@ jobs:
       - name: Test
         run: go test -race -v -timeout 2m ./...
       - name: Build cmd UNIX
-        if: {{matrix.os != "windows-latest"}}
+        if: matrix.os != 'windows-latest'
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
           PROG_VERSION=$(git describe --tags --match 'v[0-9]*')
@@ -30,7 +30,7 @@ jobs:
           go build -ldflags "-w -s -X main.version=$PROG_VERSION" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-${OS_VERSION}-amd64
 
       - name: Build cmd Windows
-        if: {{matrix.os == "windows-latest"}}
+        if: matrix.os == 'windows-latest'
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
           for /f %%i in ('git describe --tags --match 'v[0-9]*') do set PROG_VERSION=%%i
