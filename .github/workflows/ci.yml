@@ -12,11 +12,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: Install Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ matrix.go-version }}
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Test
@@ -38,25 +38,24 @@ jobs:
           dir $GITHUB_WORKSPACE/packages/check-prometheusexporter-*
       - name: Archive packages
         if: startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
-          name: packages
-          retention-days: 1
+          name: packages-upload
           path: ${{ github.workspace }}/packages/
+          if-no-files-found: error
   release-to-github:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     steps:
       - name: Download packages
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
-          name: packages
-          path: packages
+          name: packages-download
+          path: ${{ github.workspace }}/packages/
       - name: Upload to Github Releases
-        uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v3
         with:
           artifacts: "check-prometheusexporter-*"
-          token: ${{ secrets.GITHUB_TOKEN }}
           draft: true
           body: "New build."
