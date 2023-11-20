@@ -58,7 +58,7 @@ jobs:
             ${{ github.workspace }}/packages/
             D:\a\check-prometheusexporter\check-prometheusexporter\packages\
       - name: Upload to Github Releases
-        uses: ncipollo/release-action@v3
+        uses: ncipollo/release-action@v1
         with:
           artifacts: |
             ${{ github.workspace }}/packages/*
