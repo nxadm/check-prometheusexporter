@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Test
         run: go test -race -v -timeout 2m ./...
-      - name: Build cmd
+      - name: Build cmd UNIX
         if: ${{ env.OS }} != "windows-latest"
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
@@ -32,7 +32,7 @@ jobs:
           OS_VERSION=$(echo ${{ env.OS }} | cut -d'-' -f1)
           go build -ldflags "-w -s -X main.version=$PROG_VERSION" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-${OS_VERSION}-amd64
 
-      - name: Build cmd
+      - name: Build cmd Windows
         if: ${{ env.OS }} == "windows-latest"
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
