@@ -26,15 +26,16 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
           PROG_VERSION=$(git describe --tags --match 'v[0-9]*')
-          OS_VERSION=$(echo ${{ matrix.os }} | cut -d'-' -f1)
-          go build -ldflags "-w -s -X main.version=$PROG_VERSION" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-${OS_VERSION}-amd64
-
+          OS=$(echo ${{ matrix.os }} | cut -d'-' -f1)
+          go build -ldflags "-w -s -X main.version=$PROG_VERSION" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-${OS}-amd64
+          ls -lh $GITHUB_WORKSPACE/packages/check-prometheusexporter-${OS_VERSION}-amd64
       - name: Build cmd Windows
         if: matrix.os == 'windows-latest'
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
-          for /f %%i in ('git describe --tags --match 'v[0-9]*') do set PROG_VERSION=%%i
-          go build -ldflags "-w -s -X main.version=%PROG_VERSION% -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
+          $progVersion = git describe --tags --match 'v[0-9]* | Out-String
+          go build -ldflags "-w -s -X main.version=$progVersion -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
+          dir $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
       - name: Archive packages
         if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v2
