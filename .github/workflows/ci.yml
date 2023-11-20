@@ -58,6 +58,6 @@ jobs:
       - name: Upload to Github Releases
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "packages/*"
+          artifacts: "packages/*,packages/packages/*"
           draft: true
           body: "New build."
