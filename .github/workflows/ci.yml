@@ -34,6 +34,7 @@ jobs:
           retention-days: 1
           path: ${{ github.workspace }}/packages/
   release-to-github:
+    runs-on: ubuntu-latest
     if: github.repository_owner == 'nxadm' && startsWith(github.ref, 'refs/tags/v')
     needs: build
     steps:
