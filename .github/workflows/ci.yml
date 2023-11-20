@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
           $progVersion = git describe --tags --match 'v[0-9]*' | Out-String
-          go build -ldflags "-w -s -X main.version=$progVersion -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
+          go build -ldflags "-w -s -X main.version=$progVersion" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-windows-amd64.exe
           dir $GITHUB_WORKSPACE/packages/check-prometheusexporter-*
       - name: Archive packages
         if: startsWith(github.ref, 'refs/tags/v')
