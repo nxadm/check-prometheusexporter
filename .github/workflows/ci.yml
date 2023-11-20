@@ -26,7 +26,6 @@ jobs:
         run: |
           mkdir -p $GITHUB_WORKSPACE/packages/
           go build -ldflags "-w -s -X main.version=version" -o $GITHUB_WORKSPACE/packages/check-prometheusexporter-$OS
-          ls -lh $GITHUB_WORKSPACE/packages
       - name: Archive packages
         uses: actions/upload-artifact@v2
         with:
