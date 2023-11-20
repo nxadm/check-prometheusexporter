@@ -32,11 +32,10 @@ jobs:
       - name: Build cmd Windows
         if: matrix.os == 'windows-latest'
         run: |
-          mkdir -p \packages\
+          mkdir -p D:\a\check-prometheusexporter\check-prometheusexporter\packages\
           $progVersion = git describe --tags --match 'v[0-9]*' | Out-String
-          go build -ldflags "-w -s -X main.version=$progVersion" -o \packages\check-prometheusexporter-windows-amd64.exe
-          echo "packages directory: \packages\"
-          dir \packages\check-prometheusexporter-*
+          go build -ldflags "-w -s -X main.version=$progVersion" -o D:\a\check-prometheusexporter\check-prometheusexporter\packages\check-prometheusexporter-windows-amd64.exe
+          dir D:\a\check-prometheusexporter\check-prometheusexporter\packages\check-prometheusexporter-*
       - name: Archive packages
         if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/upload-artifact@v3
@@ -44,7 +43,7 @@ jobs:
           name: packages-upload
           path: |
             ${{ github.workspace }}/packages/
-            D:\packages\
+            D:\a\check-prometheusexporter\check-prometheusexporter\packages\
           if-no-files-found: error
   release-to-github:
     runs-on: ubuntu-latest
@@ -57,12 +56,12 @@ jobs:
           name: packages-download
           path: |
             ${{ github.workspace }}/packages/
-            D:\packages\
+            D:\a\check-prometheusexporter\check-prometheusexporter\packages\
       - name: Upload to Github Releases
         uses: ncipollo/release-action@v3
         with:
           artifacts: |
             ${{ github.workspace }}/packages/*
-            D:\packages\*exe
+            D:\a\check-prometheusexporter\check-prometheusexporter\packages\*exe
           draft: true
           body: "New build."
