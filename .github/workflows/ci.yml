@@ -42,8 +42,8 @@ jobs:
         with:
           name: packages
           path: |
-            ${{ github.workspace }}/packages/
-            D:\a\check-prometheusexporter\check-prometheusexporter\packages\
+            ${{ github.workspace }}/packages/*
+            D:\a\check-prometheusexporter\check-prometheusexporter\packages\*.exe
           if-no-files-found: error
   release-to-github:
     runs-on: ubuntu-latest
